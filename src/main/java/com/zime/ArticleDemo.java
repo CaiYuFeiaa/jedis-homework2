@@ -45,7 +45,7 @@ public class ArticleDemo {
         jedis.zadd("article:votes",1,"Article:" + postId);/**默认1赞.**/
         jedis.zadd("article:time",System.currentTimeMillis(),"Article:" + postId);/**获取当前毫秒数,作为分数.**/
     }
-    /**根据文章发布时间或投票多少来分页显示文章,用str控制是按time还是votes.**/
+    /**根据文章发布时间或投票多少来分页显示文章,用str控制是按time还是votes来排序.**/
     public static List<Map<String, String>> selArticleByTimeOrVotes(int page,String str,Jedis jedis){
         Set set= jedis.zrevrange("article:" + str,(page-1)*5,page*5-1);
 
