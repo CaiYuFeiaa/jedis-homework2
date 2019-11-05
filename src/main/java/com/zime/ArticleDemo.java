@@ -14,11 +14,11 @@ public class ArticleDemo {
             article.setTitle("hehe");
             article.setAuthor("zzz");
             article.setLink("helloWorld");
-            article.setTime("9");
+            article.setTime("1");
 
 //            saveArticle(article,jedis);
 //            Votes("Article:1",3,jedis);
-            System.out.println(selArticleByTimeOrVotes(1,"votes",jedis));
+            System.out.println(selArticleByTimeOrVotes(1,"time",jedis));
 
         } catch (Exception e) {
 //            Logger.Error(e.getMessage(),e);
@@ -41,11 +41,11 @@ public class ArticleDemo {
 
         jedis.hmset("Article:" + postId,articleProperties);
 
-        jedis.sadd("Article:" + postId + ":Set","Article:" + postId);
+        jedis.sadd("Article:" + postId + ":Set","Article:" + postId);/**保存点赞用户.**/
         jedis.zadd("article:votes",1,"Article:" + postId);/**默认1赞.**/
         jedis.zadd("article:time",System.currentTimeMillis(),"Article:" + postId);/**获取当前毫秒数,作为分数.**/
     }
-    /**根据文章发布时间或投票多少来分页显示文章.**/
+    /**根据文章发布时间或投票多少来分页显示文章,用str控制是按time还是votes.**/
     public static List<Map<String, String>> selArticleByTimeOrVotes(int page,String str,Jedis jedis){
         Set set= jedis.zrevrange("article:" + str,(page-1)*5,page*5-1);
 
